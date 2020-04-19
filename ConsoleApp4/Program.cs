@@ -28,21 +28,22 @@ namespace TestRabbit
                         // Declaring a queue is idempotent 
                         channel.QueueDeclare(
                             queue: queueName,
-                            durable: false,
+                            durable: true,
                             exclusive: false,
                             autoDelete: false,
                             arguments: null);
 
                         while (true)
                         {
-                            string body = $"A nice random message: {DateTime.Now.Ticks}";
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            string body = $"Sending random string to RabbitMQ: {DateTime.Now.Ticks}";
                             channel.BasicPublish(
                                 exchange: string.Empty,
                                 routingKey: queueName,
                                 basicProperties: null,
                                 body: Encoding.UTF8.GetBytes(body));
 
-                            Console.WriteLine("Message sent");
+                            Console.WriteLine("Message sent to Rabbit");
                             await Task.Delay(500);
                         }
                     }
